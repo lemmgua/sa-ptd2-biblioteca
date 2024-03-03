@@ -141,6 +141,13 @@ if __name__ == "__main__":
                     insert("Prestamos", tuple(values))
                     print("[green bold]Préstamo abierto correctamente")
                     press_to_confirm()
+                elif user_input_3 == "5": #Devolver libro
+                    clean()
+                    print("[white]Introduce el ISBN y el DNI del socio (ISBN='isbn', DNI='dni')")
+                    values = input("> ")
+                    update("Prestamos", f"Fecha_devol={str(datetime.date.today())}", values)
+                    print("[green bold]Libro devuelto correctamente")
+                    press_to_confirm()
                     
 
         elif user_input == "-1":
