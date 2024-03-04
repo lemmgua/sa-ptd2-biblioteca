@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     while user_input != "-1":
         clean()
-        prompt = """[white]¡Bienvenido! Seleccione el apartado a gestionar:\n[1] Socios\n[2] Libros\n[3] Préstamos"""
+        prompt = """[white]¡Bienvenido! Seleccione el apartado a gestionar:\n[1] Socios\n[2] Libros\n[3] Préstamos\n[4] Créditos\n[-1] Salir"""
         print(Panel(prompt, title="Biblio", title_align="left", style="#00FFF7 bold"))
         user_input = input()
 
@@ -96,10 +96,11 @@ if __name__ == "__main__":
             user_input_3 = ""
             while user_input_3 != "0":
                 clean()
-                prompt = "[white]¿Qué desea hacer?\n[2] Ver libros en prestamos\n[3] Ver socios con prestamos\n[4] Sacar libro\n[5] Devolver libro\n[0] Volver"
+                prompt = "[white]¿Qué desea hacer?\n[1] Ver todos los prestamos activos\n[2] Ver libros en prestamos\n[3] Ver socios con prestamos\n[4] Sacar libro\n[5] Devolver libro\n[0] Volver"
                 print(Panel(prompt, title="Préstamos", title_align="left", style="#00FFF7 bold"))
                 user_input_3 = input()
                 if user_input_3 == "1": #Ver prestamos
+                    clean()
                     results = query("*", "Prestamos")
                     results_table = Table()
                     results_table.add_column("ISBN")
@@ -131,7 +132,6 @@ if __name__ == "__main__":
                     [results_table.add_row(*i) for i in results]
                     print(results_table)
                     press_to_confirm()
-
                 elif user_input_3 == "4": #Sacar libro
                     clean()
                     print("[white]Introduzca los valores del préstamo (ISBN, DNI del socio):")
@@ -148,7 +148,21 @@ if __name__ == "__main__":
                     update("Prestamos", f"Fecha_devol={str(datetime.date.today())}", values)
                     print("[green bold]Libro devuelto correctamente")
                     press_to_confirm()
-                    
+                elif user_input_3 == "6": #Libros que nunca se hayan prestado
+                    clean()
+                    results = custom_query("SELECT l.ISBN, Nombre, Autor FROM Libros l LEFT JOIN Prestamos p ON l.ISBN = p.ISBN WHERE p.ISBN IS NULL")
+                    results_table = Table()
+                    results_table.add_column("ISBN")
+                    results_table.add_column("Nombre")
+                    results_table.add_column("Autor")
+                    [results_table.add_row(*i) for i in results]
+                    print(results_table)
+                    press_to_confirm()
+
+        elif user_input == "4": #Créditos
+            clean()
+            print(Panel("Proyecto diseñado y desarrollado por Ania Aguiló y Alejandro Zubiri\n2A Bachillerato\nSant Josep Obrer\n2024", title="Créditos", title_align="left", style="#00FFF7 bold"))
+            press_to_confirm()          
 
         elif user_input == "-1":
             continue

@@ -27,7 +27,6 @@ def update(Table: str, Values, Condition: str):
     db = sqlite3.connect(os.path.join(os.path.dirname(os.path.abspath(__file__)), "database.db"))
     cursor = db.cursor()
     query = f"UPDATE {Table} SET {str(dict_to_query(Values)) if isinstance(Values, dict) else Values} WHERE {Condition}"
-    print(query)
     cursor.execute(query)
     db.commit()
 def delete(Table: str, Condition: str):
